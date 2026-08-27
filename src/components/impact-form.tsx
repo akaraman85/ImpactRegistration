@@ -19,6 +19,8 @@ const initialState: RegistrationState = {
   message: "",
 };
 
+const inputClassName = "h-11 text-base sm:h-12";
+
 export function ImpactForm() {
   const [state, formAction, isPending] = useActionState(
     submitRegistration,
@@ -28,13 +30,15 @@ export function ImpactForm() {
 
   if (state.success) {
     return (
-      <Card className="w-full max-w-md border-emerald-200 bg-emerald-50/50 shadow-lg">
+      <Card className="w-full max-w-2xl border-emerald-200 bg-emerald-50/50 shadow-lg [--card-spacing:--spacing(6)] sm:[--card-spacing:--spacing(8)]">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-2xl">
+          <div className="mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-3xl">
             ✓
           </div>
-          <CardTitle className="text-emerald-900">You&apos;re registered!</CardTitle>
-          <CardDescription className="text-emerald-800">
+          <CardTitle className="text-2xl text-emerald-900 sm:text-3xl">
+            You&apos;re registered!
+          </CardTitle>
+          <CardDescription className="text-base text-emerald-800 sm:text-lg">
             {state.message}
           </CardDescription>
         </CardHeader>
@@ -43,18 +47,22 @@ export function ImpactForm() {
   }
 
   return (
-    <Card className="w-full max-w-md shadow-lg">
+    <Card className="w-full max-w-2xl shadow-lg [--card-spacing:--spacing(6)] sm:[--card-spacing:--spacing(8)]">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl tracking-tight">Impact Program</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-2xl tracking-tight sm:text-3xl">
+          Impact Program
+        </CardTitle>
+        <CardDescription className="text-base sm:text-lg">
           Share your details and we&apos;ll reach out with more information about
           Impact.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form action={formAction} className="space-y-5">
+        <form action={formAction} className="space-y-6 sm:space-y-7">
           <div className="space-y-2">
-            <Label htmlFor="name">Full name</Label>
+            <Label htmlFor="name" className="text-base">
+              Full name
+            </Label>
             <Input
               id="name"
               name="name"
@@ -62,6 +70,7 @@ export function ImpactForm() {
               placeholder="Jane Smith"
               autoComplete="name"
               required
+              className={inputClassName}
               aria-invalid={!!state.errors?.name}
             />
             {state.errors?.name && (
@@ -70,14 +79,18 @@ export function ImpactForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phone">Phone number</Label>
+            <Label htmlFor="phone" className="text-base">
+              Phone number
+            </Label>
             <Input
               id="phone"
               name="phone"
               type="tel"
               placeholder="(555) 123-4567"
               autoComplete="tel"
+              inputMode="tel"
               required
+              className={inputClassName}
               aria-invalid={!!state.errors?.phone}
             />
             {state.errors?.phone && (
@@ -85,20 +98,64 @@ export function ImpactForm() {
             )}
           </div>
 
+          <fieldset className="space-y-3">
+            <legend className="text-base font-medium">
+              Child&apos;s first name
+              <span className="ml-1 font-normal text-muted-foreground">
+                (at least one required)
+              </span>
+            </legend>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="child1FirstName" className="text-sm text-muted-foreground">
+                  Child 1
+                </Label>
+                <Input
+                  id="child1FirstName"
+                  name="child1FirstName"
+                  type="text"
+                  placeholder="First name"
+                  autoComplete="off"
+                  className={inputClassName}
+                  aria-invalid={!!state.errors?.child1FirstName}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="child2FirstName" className="text-sm text-muted-foreground">
+                  Child 2
+                </Label>
+                <Input
+                  id="child2FirstName"
+                  name="child2FirstName"
+                  type="text"
+                  placeholder="First name"
+                  autoComplete="off"
+                  className={inputClassName}
+                  aria-invalid={!!state.errors?.child2FirstName}
+                />
+              </div>
+            </div>
+            {(state.errors?.child1FirstName || state.errors?.child2FirstName) && (
+              <p className="text-sm text-destructive">
+                {state.errors.child1FirstName?.[0] ?? state.errors.child2FirstName?.[0]}
+              </p>
+            )}
+          </fieldset>
+
           <div className="space-y-2">
-            <div className="flex items-start gap-3 rounded-lg border bg-muted/40 p-4">
+            <div className="flex items-start gap-3 rounded-lg border bg-muted/40 p-4 sm:p-5">
               <Checkbox
                 id="consent"
                 checked={consent}
                 onCheckedChange={(checked) => setConsent(checked === true)}
                 required
-                className="mt-0.5"
+                className="mt-0.5 size-5"
                 aria-invalid={!!state.errors?.consent}
               />
               <input type="hidden" name="consent" value={consent ? "on" : ""} />
               <Label
                 htmlFor="consent"
-                className="cursor-pointer text-sm leading-relaxed font-normal"
+                className="cursor-pointer text-base leading-relaxed font-normal"
               >
                 I give permission to be contacted about the Impact program via
                 phone or text message.
@@ -113,7 +170,12 @@ export function ImpactForm() {
             <p className="text-sm text-destructive">{state.message}</p>
           )}
 
-          <Button type="submit" className="w-full" size="lg" disabled={isPending}>
+          <Button
+            type="submit"
+            className="h-12 w-full text-base sm:h-14 sm:text-lg"
+            size="lg"
+            disabled={isPending}
+          >
             {isPending ? "Submitting..." : "Submit"}
           </Button>
         </form>

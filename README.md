@@ -36,12 +36,12 @@ npm run dev
 
 | Variable | Description |
 |----------|-------------|
-| `DATABASE_URL` | Postgres connection string (Neon recommended) |
+| `DATABASE_POSTGRES_URL` | Postgres connection string (Neon recommended) |
 | `NEXT_PUBLIC_APP_URL` | Optional. Your deployed URL so QR codes point to production |
 
 ## Deployment
 
-Deploy to [Vercel](https://vercel.com) and set `DATABASE_URL` and `NEXT_PUBLIC_APP_URL` in your project environment variables.
+Deploy to [Vercel](https://vercel.com) and set `DATABASE_POSTGRES_URL` and `NEXT_PUBLIC_APP_URL` in your project environment variables.
 
 ## Tech Stack
 
